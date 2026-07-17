@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Apple Global Sales Analytics | 2019–2024</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --apple-dark: #1d1d1f;
+    --apple-mid: #3a3a3c;
+    --apple-gray: #6e6e73;
+    --apple-light: #f5f5f7;
+    --apple-white: #ffffff;
+    --apple-blue: #0071e3;
+    --apple-blue-hover: #0077ed;
+    --apple-green: #30d158;
+    --apple-orange: #ff9f0a;
+    --apple-red: #ff3b30;
+    --apple-purple: #bf5af2;
+    --apple-teal: #5ac8fa;
+    --card-bg: #ffffff;
+    --card-border: rgba(0,0,0,0.08);
+    --page-bg: #f5f5f7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+    background: var(--page-bg);
+    color: var(--apple-dark);
+    min-height: 100vh;
+  }
+  /* HEADER */
+  header {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--card-border);
+    padding: 0 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+  }
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+  }
+  .apple-icon { font-size: 20px; }
+  .header-badge {
+    background: var(--apple-blue);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+  .header-meta {
+    font-size: 13px;
+    color: var(--apple-gray);
+  }
+  /* MAIN */
+  main {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 40px 60px;
+  }
+  /* SECTION LABELS */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--apple-gray);
+    margin-bottom: 16px;
+  }
+  /* KPI GRID */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .kpi-card {
+    background: var(--card-bg);
+    border-radius: 18px;
+    padding: 24px;
+    border: 1px solid var(--card-border);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+  .kpi-accent {
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    border-radius: 0 18px 0 80px;
+    opacity: 0.08;
+  }
+  .kpi-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .kpi-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--apple-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+  }
+  .kpi-value {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .kpi-change {
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .kpi-change.up { color: var(--apple-green); }
+  .kpi-change.down { color: var(--apple-red); }
+  .kpi-change.neutral { color: var(--apple-gray); }
+  /* CHART GRID */
+  .chart-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .chart-grid-3 {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .chart-card {
+    background: var(--card-bg);
+    border-radius: 18px;
+    border: 1px solid var(--card-border);
+    padding: 28px;
+    transition: box-shadow 0.2s;
+  }
+  .chart-card:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+  .chart-title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin-bottom: 4px;
+  }
+  .chart-subtitle {
+    font-size: 13px;
+    color: var(--apple-gray);
+    margin-bottom: 24px;
+  }
+  .chart-wrap {
+    position: relative;
+    height: 240px;
+  }
+  .chart-wrap-sm {
+    position: relative;
+    height: 200px;
+  }
+  /* INSIGHT PILLS */
+  .insight-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .insight-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 30px;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--apple-dark);
+    cursor: default;
+    transition: background 0.15s;
+  }
+  .insight-pill:hover { background: #f0f0f0; }
+  .pill-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  /* WARRANTY TABLE */
+  .warranty-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .warranty-row:last-child { border-bottom: none; }
+  .warranty-status {
+    font-size: 13px;
+    font-weight: 500;
+    flex: 1;
+  }
+  .warranty-count {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--apple-dark);
+    min-width: 60px;
+    text-align: right;
+  }
+  .warranty-pct {
+    font-size: 12px;
+    color: var(--apple-gray);
+    min-width: 40px;
+    text-align: right;
+  }
+  .warranty-bar-bg {
+    flex: 1;
+    height: 6px;
+    background: var(--apple-light);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .warranty-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s cubic-bezier(.4,0,.2,1);
+  }
+  /* SQL SECTION */
+  .sql-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .sql-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 20px;
+    position: relative;
+  }
+  .sql-num {
+    position: absolute;
+    top: 16px; right: 16px;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--apple-light);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  .sql-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+  .tag-basic { background: #e8f5e9; color: #2e7d32; }
+  .tag-medium { background: #fff3e0; color: #e65100; }
+  .tag-hard { background: #fce4ec; color: #c62828; }
+  .sql-q { font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--apple-dark); line-height: 1.4; }
+  .sql-answer { font-size: 24px; font-weight: 700; color: var(--apple-blue); letter-spacing: -0.5px; }
+  .sql-unit { font-size: 12px; color: var(--apple-gray); font-weight: 400; margin-left: 2px; }
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 40px;
+    font-size: 13px;
+    color: var(--apple-gray);
+    border-top: 1px solid var(--card-border);
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--apple-light);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 24px;
+    width: fit-content;
+  }
+  .tab-btn {
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    background: transparent;
+    color: var(--apple-gray);
+    transition: all 0.2s;
+  }
+  .tab-btn.active {
+    background: var(--card-bg);
+    color: var(--apple-dark);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+  /* FINDING BOX */
+  .finding-box {
+    background: linear-gradient(135deg, #f0f7ff 0%, #e8f0fe 100%);
+    border: 1px solid #c2d4f8;
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+  .finding-item { }
+  .finding-item .f-label { font-size: 11px; font-weight: 600; color: #5c7099; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+  .finding-item .f-value { font-size: 18px; font-weight: 700; color: #1a3a6b; margin-bottom: 3px; }
+  .finding-item .f-note { font-size: 12px; color: #5c7099; }
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .chart-grid-2, .chart-grid-3 { grid-template-columns: 1fr; }
+    .sql-grid { grid-template-columns: repeat(2, 1fr); }
+    main { padding: 20px 16px 40px; }
+    header { padding: 0 16px; }
+  }
+  @media (max-width: 600px) {
+    .kpi-grid, .sql-grid { grid-template-columns: 1fr; }
+    .finding-box { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-logo">
+      <span class="apple-icon">🍎</span>
+      Apple Global Sales Analytics
+      <span class="header-badge">1M+ Rows</span>
+    </div>
+    <div class="header-meta">Dataset: 2019 – 2024 &nbsp;·&nbsp; 73 Stores &nbsp;·&nbsp; 35 Countries &nbsp;·&nbsp; 63 Products</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- KPI CARDS -->
+  <div style="margin-bottom:20px">
+    <div class="section-label">Key Performance Indicators</div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-accent" style="background:var(--apple-blue)"></div>
+      <span class="kpi-icon">💰</span>
+      <div class="kpi-label">Total Revenue</div>
+      <div class="kpi-value" style="color:var(--apple-blue)">$993M</div>
+      <div class="kpi-change up">↑ 112% peak YoY (2021→2022)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-accent" style="background:var(--apple-green)"></div>
+      <span class="kpi-icon">📦</span>
+      <div class="kpi-label">Units Sold</div>
+      <div class="kpi-value" style="color:var(--apple-green)">1.19M</div>
+      <div class="kpi-change neutral">Across 1,040,191 transactions</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-accent" style="background:var(--apple-orange)"></div>
+      <span class="kpi-icon">🏪</span>
+      <div class="kpi-label">Active Stores</div>
+      <div class="kpi-value" style="color:var(--apple-orange)">73</div>
+      <div class="kpi-change neutral">Across 35 countries</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-accent" style="background:var(--apple-red)"></div>
+      <span class="kpi-icon">🔧</span>
+      <div class="kpi-label">Warranty Claim Rate</div>
+      <div class="kpi-value" style="color:var(--apple-red)">2.6%</div>
+      <div class="kpi-change down">30,836 claims filed</div>
+    </div>
+  </div>
+
+  <!-- KEY FINDINGS -->
+  <div class="section-label">Analyst Findings</div>
+  <div class="finding-box">
+    <div class="finding-item">
+      <div class="f-label">Best Year</div>
+      <div class="f-value">2022 — $297M</div>
+      <div class="f-note">65.9% jump from 2021, driven by Smartphone launches</div>
+    </div>
+    <div class="finding-item">
+      <div class="f-label">Top Market</div>
+      <div class="f-value">USA — $306M (30.8%)</div>
+      <div class="f-note">10 stores dominating with 5 in top-5 globally</div>
+    </div>
+    <div class="finding-item">
+      <div class="f-label">Risk Signal</div>
+      <div class="f-value">UAE — 66.4% claim rate</div>
+      <div class="f-note">Warranty void & replacement spike; needs investigation</div>
+    </div>
+  </div>
+
+  <!-- REVENUE TREND -->
+  <div class="section-label">Revenue & Sales Trends</div>
+  <div class="chart-grid-3" style="margin-bottom:16px">
+    <div class="chart-card">
+      <div class="chart-title">Annual Revenue 2019–2024</div>
+      <div class="chart-subtitle">Full-year figures; 2024 partial (Jan–Aug)</div>
+      <div class="chart-wrap">
+        <canvas id="revenueChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Revenue by Category</div>
+      <div class="chart-subtitle">Total across all years</div>
+      <div class="chart-wrap">
+        <canvas id="categoryChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-grid-2">
+    <div class="chart-card">
+      <div class="chart-title">Monthly Revenue Pattern (2022)</div>
+      <div class="chart-subtitle">Best-performing year — seasonal breakdown</div>
+      <div class="chart-wrap-sm">
+        <canvas id="monthlyChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Top 5 Countries by Revenue</div>
+      <div class="chart-subtitle">All-time cumulative</div>
+      <div class="chart-wrap-sm">
+        <canvas id="countryChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- WARRANTY SECTION -->
+  <div style="margin-top:32px; margin-bottom:20px">
+    <div class="section-label">Warranty & Risk Analysis</div>
+  </div>
+  <div class="chart-grid-2">
+    <div class="chart-card">
+      <div class="chart-title">Warranty Claim Breakdown</div>
+      <div class="chart-subtitle">Status distribution across 30,836 claims</div>
+      <div style="margin-top: 8px">
+        <div class="warranty-row">
+          <div style="width:10px;height:10px;border-radius:50%;background:#30d158;flex-shrink:0"></div>
+          <div class="warranty-status">Free Replaced</div>
+          <div class="warranty-bar-bg"><div class="warranty-bar-fill" style="width:65.4%;background:#30d158"></div></div>
+          <div class="warranty-count">20,167</div>
+          <div class="warranty-pct">65.4%</div>
+        </div>
+        <div class="warranty-row">
+          <div style="width:10px;height:10px;border-radius:50%;background:#ff3b30;flex-shrink:0"></div>
+          <div class="warranty-status">Warranty Void</div>
+          <div class="warranty-bar-bg"><div class="warranty-bar-fill" style="width:23.2%;background:#ff3b30"></div></div>
+          <div class="warranty-count">7,143</div>
+          <div class="warranty-pct">23.2%</div>
+        </div>
+        <div class="warranty-row">
+          <div style="width:10px;height:10px;border-radius:50%;background:#ff9f0a;flex-shrink:0"></div>
+          <div class="warranty-status">Paid Repaired</div>
+          <div class="warranty-bar-bg"><div class="warranty-bar-fill" style="width:11.4%;background:#ff9f0a"></div></div>
+          <div class="warranty-count">3,526</div>
+          <div class="warranty-pct">11.4%</div>
+        </div>
+      </div>
+      <div style="margin-top:20px">
+        <div class="chart-wrap-sm">
+          <canvas id="warrantyChart"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Warranty Claim Risk by Country</div>
+      <div class="chart-subtitle">Claims as % of units sold — identifies quality hotspots</div>
+      <div class="chart-wrap" style="height:280px">
+        <canvas id="riskChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSIGHT PILLS -->
+  <div style="margin-top:32px; margin-bottom:20px">
+    <div class="section-label">Key Insights</div>
+  </div>
+  <div class="insight-row">
+    <div class="insight-pill"><span class="pill-dot" style="background:#30d158"></span>Smartphones drive 43.8% of all revenue</div>
+    <div class="insight-pill"><span class="pill-dot" style="background:#0071e3"></span>2022 was peak year at $297M (+65.9% YoY)</div>
+    <div class="insight-pill"><span class="pill-dot" style="background:#ff3b30"></span>UAE shows 66% warranty claim rate — anomaly flag</div>
+    <div class="insight-pill"><span class="pill-dot" style="background:#ff9f0a"></span>USA accounts for 30.8% of global revenue</div>
+    <div class="insight-pill"><span class="pill-dot" style="background:#bf5af2"></span>South Coast Plaza is the #1 store globally</div>
+    <div class="insight-pill"><span class="pill-dot" style="background:#5ac8fa"></span>Sept–Dec sees consistent revenue peaks each year</div>
+  </div>
+
+  <!-- SQL BUSINESS PROBLEMS -->
+  <div style="margin-bottom:20px">
+    <div class="section-label">SQL Business Problems Solved (20 Queries)</div>
+  </div>
+  <div class="sql-grid">
+    <div class="sql-card">
+      <span class="sql-num">01</span>
+      <div class="sql-tag tag-basic">Basic</div>
+      <div class="sql-q">Stores per country</div>
+      <div class="sql-answer">35 <span class="sql-unit">countries</span></div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">02</span>
+      <div class="sql-tag tag-basic">Basic</div>
+      <div class="sql-q">Top store by units sold</div>
+      <div class="sql-answer">South Coast Plaza</div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">03</span>
+      <div class="sql-tag tag-basic">Basic</div>
+      <div class="sql-q">Sales in Dec 2023</div>
+      <div class="sql-answer">~11.2K <span class="sql-unit">transactions</span></div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">04</span>
+      <div class="sql-tag tag-basic">Basic</div>
+      <div class="sql-q">Stores with zero warranty claims</div>
+      <div class="sql-answer">0 <span class="sql-unit">stores</span></div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">05</span>
+      <div class="sql-tag tag-basic">Basic</div>
+      <div class="sql-q">% Warranty Void claims</div>
+      <div class="sql-answer">23.2<span class="sql-unit">%</span></div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">06</span>
+      <div class="sql-tag tag-basic">Basic</div>
+      <div class="sql-q">Highest units sold — last year</div>
+      <div class="sql-answer">South Coast Plaza</div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">07</span>
+      <div class="sql-tag tag-basic">Basic</div>
+      <div class="sql-q">Unique products sold — last year</div>
+      <div class="sql-answer">63 <span class="sql-unit">products</span></div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">08</span>
+      <div class="sql-tag tag-basic">Basic</div>
+      <div class="sql-q">Avg price per category</div>
+      <div class="sql-answer">$827 <span class="sql-unit">avg (laptop)</span></div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">09</span>
+      <div class="sql-tag tag-basic">Basic</div>
+      <div class="sql-q">Warranty claims in 2020</div>
+      <div class="sql-answer">7,174 <span class="sql-unit">claims</span></div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">10</span>
+      <div class="sql-tag tag-basic">Basic</div>
+      <div class="sql-q">Best selling day per store</div>
+      <div class="sql-answer">Saturday <span class="sql-unit">(most stores)</span></div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">11</span>
+      <div class="sql-tag tag-medium">Medium</div>
+      <div class="sql-q">Least selling product per country/year</div>
+      <div class="sql-answer">By region <span class="sql-unit">with RANK()</span></div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">12</span>
+      <div class="sql-tag tag-medium">Medium</div>
+      <div class="sql-q">Claims within 180 days of sale</div>
+      <div class="sql-answer">~18.4K <span class="sql-unit">claims</span></div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">13</span>
+      <div class="sql-tag tag-medium">Medium</div>
+      <div class="sql-q">Claims for products launched last 2 yrs</div>
+      <div class="sql-answer">Multi-product <span class="sql-unit">with HAVING</span></div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">14</span>
+      <div class="sql-tag tag-medium">Medium</div>
+      <div class="sql-q">USA months with 5K+ units in 3 yrs</div>
+      <div class="sql-answer">18 <span class="sql-unit">months</span></div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">15</span>
+      <div class="sql-tag tag-medium">Medium</div>
+      <div class="sql-q">Top warranty category last 2 years</div>
+      <div class="sql-answer">Smartphone</div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">16</span>
+      <div class="sql-tag tag-hard">Hard</div>
+      <div class="sql-q">Warranty claim probability by country</div>
+      <div class="sql-answer">UAE 66%<span class="sql-unit"> (highest)</span></div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">17</span>
+      <div class="sql-tag tag-hard">Hard</div>
+      <div class="sql-q">Store YoY revenue growth ratio</div>
+      <div class="sql-answer">LAG() + <span class="sql-unit">Window fn</span></div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">18</span>
+      <div class="sql-tag tag-hard">Hard</div>
+      <div class="sql-q">Price segment vs warranty claims</div>
+      <div class="sql-answer">Budget<span class="sql-unit"> = most claims</span></div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">19</span>
+      <div class="sql-tag tag-hard">Hard</div>
+      <div class="sql-q">Store with most Paid Repaired %</div>
+      <div class="sql-answer">FILTER() + <span class="sql-unit">ROUND()</span></div>
+    </div>
+    <div class="sql-card">
+      <span class="sql-num">20</span>
+      <div class="sql-tag tag-hard">Hard</div>
+      <div class="sql-q">Monthly running total per store (4 yrs)</div>
+      <div class="sql-answer">SUM() OVER <span class="sql-unit">window fn</span></div>
+    </div>
+  </div>
+
+  <!-- TECH STACK -->
+  <div style="margin-bottom:20px">
+    <div class="section-label">Technical Skills Demonstrated</div>
+  </div>
+  <div class="chart-grid-2" style="margin-bottom:0">
+    <div class="chart-card">
+      <div class="chart-title">SQL Techniques Used</div>
+      <div class="chart-subtitle">Complexity progression from basic to advanced</div>
+      <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:8px">
+        <span style="background:#e8f5e9;color:#2e7d32;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500">JOINs (4 tables)</span>
+        <span style="background:#e8f5e9;color:#2e7d32;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500">Aggregations</span>
+        <span style="background:#fff3e0;color:#e65100;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500">CTEs (WITH)</span>
+        <span style="background:#fff3e0;color:#e65100;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500">Subqueries</span>
+        <span style="background:#fff3e0;color:#e65100;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500">Date Functions</span>
+        <span style="background:#fce4ec;color:#c62828;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500">Window Functions</span>
+        <span style="background:#fce4ec;color:#c62828;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500">RANK() / LAG()</span>
+        <span style="background:#fce4ec;color:#c62828;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500">PARTITION BY</span>
+        <span style="background:#fce4ec;color:#c62828;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500">FILTER Clause</span>
+        <span style="background:#fce4ec;color:#c62828;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500">COALESCE</span>
+        <span style="background:#ede7f6;color:#4527a0;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500">Query Indexing</span>
+        <span style="background:#ede7f6;color:#4527a0;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500">EXPLAIN ANALYZE</span>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Performance Optimizations</div>
+      <div class="chart-subtitle">Execution time improvements documented</div>
+      <div style="margin-top:16px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="background:#f5f5f7;border-radius:12px;padding:16px;text-align:center">
+            <div style="font-size:11px;color:var(--apple-gray);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Product Query (Before)</div>
+            <div style="font-size:28px;font-weight:700;color:var(--apple-red)">64ms</div>
+            <div style="font-size:11px;color:var(--apple-gray);margin-top:4px">Full table scan</div>
+          </div>
+          <div style="background:#f5f5f7;border-radius:12px;padding:16px;text-align:center">
+            <div style="font-size:11px;color:var(--apple-gray);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Product Query (After)</div>
+            <div style="font-size:28px;font-weight:700;color:var(--apple-green)">5ms</div>
+            <div style="font-size:11px;color:var(--apple-gray);margin-top:4px">92% faster with index</div>
+          </div>
+          <div style="background:#f5f5f7;border-radius:12px;padding:16px;text-align:center">
+            <div style="font-size:11px;color:var(--apple-gray);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Store Query (Before)</div>
+            <div style="font-size:28px;font-weight:700;color:var(--apple-red)">41ms</div>
+            <div style="font-size:11px;color:var(--apple-gray);margin-top:4px">No index</div>
+          </div>
+          <div style="background:#f5f5f7;border-radius:12px;padding:16px;text-align:center">
+            <div style="font-size:11px;color:var(--apple-gray);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Store Query (After)</div>
+            <div style="font-size:28px;font-weight:700;color:var(--apple-green)">2ms</div>
+            <div style="font-size:11px;color:var(--apple-gray);margin-top:4px">95% faster with index</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Apple Sales Analytics Project &nbsp;·&nbsp; 1,040,191 Transactions &nbsp;·&nbsp; PostgreSQL + Python + Visualization &nbsp;·&nbsp; Built for portfolio demonstration
+</footer>
+
+<script>
+const BLUE   = '#0071e3';
+const GREEN  = '#30d158';
+const ORANGE = '#ff9f0a';
+const RED    = '#ff3b30';
+const PURPLE = '#bf5af2';
+const TEAL   = '#5ac8fa';
+const GRAY   = '#8e8e93';
+
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif";
+Chart.defaults.color = '#6e6e73';
+Chart.defaults.plugins.legend.display = false;
+
+const gridOpts = {
+  color: 'rgba(0,0,0,0.05)',
+  drawBorder: false
+};
+
+/* 1. Annual Revenue */
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2019','2020','2021','2022','2023','2024*'],
+    datasets: [{
+      data: [139.6, 203.1, 178.7, 296.7, 159.2, 15.4],
+      backgroundColor: [BLUE, BLUE, BLUE, ORANGE, BLUE, GRAY],
+      borderRadius: 8,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: ctx => ` $${ctx.raw}M revenue`
+        }
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, border: { display: false } },
+      y: {
+        grid: gridOpts,
+        border: { display: false },
+        ticks: { callback: v => '$' + v + 'M' }
+      }
+    }
+  }
+});
+
+/* 2. Category Donut */
+new Chart(document.getElementById('categoryChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Smartphone','Laptop','Tablet','Desktop','Wearable','Other'],
+    datasets: [{
+      data: [435.0, 306.1, 103.0, 94.6, 28.9, 25.6],
+      backgroundColor: [BLUE, GREEN, ORANGE, PURPLE, TEAL, GRAY],
+      borderWidth: 3,
+      borderColor: '#ffffff',
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '68%',
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: {
+          boxWidth: 10,
+          boxHeight: 10,
+          padding: 10,
+          font: { size: 11 }
+        }
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` $${ctx.raw}M (${((ctx.raw/993)*100).toFixed(1)}%)`
+        }
+      }
+    }
+  }
+});
+
+/* 3. Monthly 2022 */
+new Chart(document.getElementById('monthlyChart'), {
+  type: 'line',
+  data: {
+    labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    datasets: [{
+      data: [26.7, 24.5, 30.1, 29.2, 21.8, 16.5, 17.8, 15.4, 29.6, 28.6, 29.1, 27.6],
+      borderColor: BLUE,
+      backgroundColor: 'rgba(0,113,227,0.1)',
+      borderWidth: 2.5,
+      pointBackgroundColor: BLUE,
+      pointRadius: 4,
+      pointHoverRadius: 6,
+      tension: 0.4,
+      fill: true
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: { callbacks: { label: ctx => ` $${ctx.raw}M` } }
+    },
+    scales: {
+      x: { grid: { display: false }, border: { display: false } },
+      y: {
+        grid: gridOpts,
+        border: { display: false },
+        ticks: { callback: v => '$' + v + 'M' }
+      }
+    }
+  }
+});
+
+/* 4. Country Bar */
+new Chart(document.getElementById('countryChart'), {
+  type: 'bar',
+  data: {
+    labels: ['USA','Canada','UK','India','Turkey'],
+    datasets: [{
+      data: [305.7, 160.8, 58.2, 46.3, 45.5],
+      backgroundColor: [BLUE, GREEN, ORANGE, PURPLE, TEAL],
+      borderRadius: 8,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: { callbacks: { label: ctx => ` $${ctx.raw}M` } }
+    },
+    scales: {
+      x: {
+        grid: gridOpts,
+        border: { display: false },
+        ticks: { callback: v => '$' + v + 'M' }
+      },
+      y: { grid: { display: false }, border: { display: false } }
+    }
+  }
+});
+
+/* 5. Warranty Doughnut */
+new Chart(document.getElementById('warrantyChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Free Replaced','Warranty Void','Paid Repaired'],
+    datasets: [{
+      data: [20167, 7143, 3526],
+      backgroundColor: [GREEN, RED, ORANGE],
+      borderWidth: 3,
+      borderColor: '#ffffff',
+      hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '60%',
+    plugins: {
+      legend: {
+        display: true,
+        position: 'right',
+        labels: { boxWidth: 10, boxHeight: 10, font: { size: 11 } }
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` ${ctx.raw.toLocaleString()} claims`
+        }
+      }
+    }
+  }
+});
+
+/* 6. Risk Chart */
+new Chart(document.getElementById('riskChart'), {
+  type: 'bar',
+  data: {
+    labels: ['UAE','Spain','Italy','Turkey','India','UK','Germany','France'],
+    datasets: [{
+      data: [66.4, 27.5, 11.6, 11.3, 4.1, 2.4, 1.7, 1.1],
+      backgroundColor: ctx => {
+        const v = ctx.raw;
+        if (v > 30) return RED;
+        if (v > 10) return ORANGE;
+        return GREEN;
+      },
+      borderRadius: 6,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: { callbacks: { label: ctx => ` ${ctx.raw}% claim rate` } }
+    },
+    scales: {
+      x: {
+        grid: gridOpts,
+        border: { display: false },
+        ticks: { callback: v => v + '%' }
+      },
+      y: { grid: { display: false }, border: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>
