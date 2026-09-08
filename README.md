@@ -1,5 +1,5 @@
 # 🍎 Apple Global Retail Sales Analysis
-### SQL + Python Analytics Project | 1M+ Transactions | 2019–2024
+### Retail Revenue, Product and Warranty Analytics | PostgreSQL + Python + Interactive Dashboard | 1M+ Transactions | 2019–2024
 
 ![SQL](https://img.shields.io/badge/SQL-PostgreSQL-336791?style=flat&logo=postgresql&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-pandas%20%7C%20numpy-3776AB?style=flat&logo=python&logoColor=white)
@@ -152,7 +152,6 @@ See [`recommendations/executive_recommendations.md`](recommendations/executive_r
 | Tool | Purpose |
 |---|---|
 | **PostgreSQL** | Primary query engine for all 25 SQL questions |
-| **Python (pandas, numpy)** | Data validation, metric computation, trend modeling |
 | **Chart.js** | Interactive dashboard visualizations |
 | **HTML/CSS/JavaScript** | Self-contained portable dashboard (no backend required) |
 | **EXPLAIN ANALYZE** | Query performance profiling and index validation |
