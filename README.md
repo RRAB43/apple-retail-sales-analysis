@@ -18,7 +18,17 @@ Apple operates **73 retail stores across 35 countries**, generating hundreds of 
 - Which products earn the most while costing the least in after-sale support?
 - Where should Apple focus inventory, marketing, and operations resources next?
 
-This is not a tutorial project. It is a structured analytics engagement on a real-scale dataset, designed to mirror the work done by data analysts and scientists at top-tier retail and tech companies.
+The dataset comes from [Zero Analyst's Apple Retail Sales SQL challenge](https://github.com/najirh/Apple-Retail-Sales-SQL-Project---Analyzing-Millions-of-Sales-Rows); all queries, the expert-tier extensions (Q21–Q25), the interactive dashboards, and the executive recommendations are my own work, structured to mirror a real retail analytics engagement.
+
+---
+
+## 🖥️ Dashboard Preview
+
+*Both dashboards are single HTML files — download and open in any browser, no server needed.*
+
+![Main KPI dashboard](assets/dashboard_main.png)
+
+![Advanced layers: forecasting, scenario simulator, product deep-dive](assets/dashboard_advanced.png)
 
 ---
 
@@ -41,32 +51,24 @@ This is not a tutorial project. It is a structured analytics engagement on a rea
 ## 🗂️ Repository Structure
 
 ```
-apple-sales-analysis/
+apple-retail-sales-analysis/
 │
-├── data/                          # Raw CSV files
-│   ├── sales.csv
-│   ├── products.csv
-│   ├── stores.csv
-│   ├── category.csv
-│   └── warranty.csv
-│
-├── sql/                           # All 25 SQL queries
-│   ├── 01_exploratory.sql         # EDA + index creation
+├── sql/                           # All 25 SQL queries, tiered by difficulty
+│   ├── 01_exploratory.sql         # EDA + index creation & timings
 │   ├── 02_basic_questions.sql     # Q1–Q10
 │   ├── 03_intermediate.sql        # Q11–Q15
 │   ├── 04_advanced.sql            # Q16–Q20
-│   └── 05_expert.sql              # Q21–Q25 (new)
+│   └── 05_expert.sql              # Q21–Q25
 │
-├── dashboards/                    # Interactive HTML dashboards
+├── dashboards/                    # Interactive HTML dashboards (no backend)
 │   ├── apple_sales_dashboard.html        # Main KPI overview
 │   └── apple_advanced_layers.html        # Predictive + Product + SQL layers
 │
-├── notebooks/                     # Python analysis (optional)
-│   └── apple_eda.ipynb
-│
 ├── recommendations/
-│   └── executive_recommendations.md     # Business recommendations
+│   └── executive_recommendations.md      # Executive brief with prioritized actions
 │
+├── assets/                        # Dashboard screenshots
+├── data/                          # Dataset access instructions (CSVs not committed)
 └── README.md
 ```
 
@@ -160,7 +162,7 @@ See [`recommendations/executive_recommendations.md`](recommendations/executive_r
 ## 🚀 How to Run
 
 ### SQL Queries
-1. Load all five CSV files into PostgreSQL as tables matching their filenames
+1. Get the five CSVs from the [source project](https://github.com/najirh/Apple-Retail-Sales-SQL-Project---Analyzing-Millions-of-Sales-Rows) (see `data/README.md`) and load them into PostgreSQL as tables matching their filenames
 2. Run `sql/01_exploratory.sql` first to create indexes
 3. Execute queries in order — each file builds on the previous
 
@@ -173,9 +175,11 @@ See [`recommendations/executive_recommendations.md`](recommendations/executive_r
 
 ## 👤 Author
 
-Built as a portfolio project demonstrating end-to-end data analytics skills:
-SQL query design → performance optimization → business insight generation → predictive modeling → executive communication
+**Rabiul Hasan** — Growth marketing & analytics · San Francisco, CA
+📧 rrab4301@gmail.com · [GitHub](https://github.com/RRAB43) <!-- TODO: add your LinkedIn URL here -->
+
+End-to-end skills demonstrated: SQL query design → performance optimization → business insight generation → predictive modeling → executive communication.
 
 ---
 
-*Dataset sourced for educational and portfolio purposes. All business insights are analytical observations based on the dataset provided.*
+*Dataset from [Zero Analyst's SQL challenge](https://github.com/najirh/Apple-Retail-Sales-SQL-Project---Analyzing-Millions-of-Sales-Rows), used for educational and portfolio purposes. All queries, dashboards, and business insights are my own analytical work on the dataset provided.*
