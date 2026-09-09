@@ -76,15 +76,24 @@ GROUP BY s.store_id
 ORDER BY paid_repaired_pct DESC
 LIMIT 1;
 
--- 20. Zero-claim, high-revenue products (> $100K revenue, no claims ever)
+-- 20. Zero-claim, high-revenue products
+-- A product qualifies only when no warranty claim is associated
+-- with any of its sales transactions.
+
 SELECT
     p.product_id,
     p.product_name,
-    SUM(s.quantity * p.price) AS total_revenue
+    SUM(s.quantity) AS total_units_sold,
+    ROUND(SUM(s.quantity * p.price), 2) AS total_revenue,
+    COUNT(w.claim_id) AS total_claims
 FROM sales AS s
-JOIN products AS p ON s.product_id = p.product_id
-LEFT JOIN warranty AS w ON s.sale_id = w.sale_id
-WHERE w.claim_id IS NULL
-GROUP BY p.product_id, p.product_name
-HAVING SUM(s.quantity * p.price) > 100000
+JOIN products AS p
+    ON s.product_id = p.product_id
+LEFT JOIN warranty AS w
+    ON s.sale_id = w.sale_id
+GROUP BY
+    p.product_id,
+    p.product_name
+HAVING COUNT(w.claim_id) = 0
+   AND SUM(s.quantity * p.price) > 100000
 ORDER BY total_revenue DESC;
