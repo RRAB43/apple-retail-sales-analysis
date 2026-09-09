@@ -1,0 +1,25 @@
+{
+  "method": "Linear regression with time trend and quarterly indicators",
+  "training_period": "2019-01-01 through 2023-12-31",
+  "training_mae": 23501266.76,
+  "forecast_2024": [
+    {
+      "quarter": "2024-Q1",
+      "revenue": 57943591.05
+    },
+    {
+      "quarter": "2024-Q2",
+      "revenue": 43488229.85
+    },
+    {
+      "quarter": "2024-Q3",
+      "revenue": 45905704.65
+    },
+    {
+      "quarter": "2024-Q4",
+      "revenue": 87987785.05
+    }
+  ],
+  "forecast_2024_total": 235325310.6,
+  "warning": "Illustrative portfolio model. Dataset anomalies and incomplete periods limit decision use."
+}
