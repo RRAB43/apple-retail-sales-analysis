@@ -53,23 +53,34 @@ The dataset comes from [Zero Analyst's Apple Retail Sales SQL challenge](https:/
 ```
 apple-retail-sales-analysis/
 │
-├── sql/                           # All 25 SQL queries, tiered by difficulty
-│   ├── 01_exploratory.sql         # EDA + index creation & timings
-│   ├── 02_basic_questions.sql     # Q1–Q10
-│   ├── 03_intermediate.sql        # Q11–Q15
-│   ├── 04_advanced.sql            # Q16–Q20
-│   └── 05_expert.sql              # Q21–Q25
+├── sql/                              # All 25 SQL queries
+│   ├── 01_exploratory.sql            # EDA, validation and indexes
+│   ├── 02_basic_questions.sql        # Q1–Q10
+│   ├── 03_intermediate.sql           # Q11–Q15
+│   ├── 04_advanced.sql               # Q16–Q20
+│   └── 05_expert.sql                 # Q21–Q25
 │
-├── dashboards/                    # Interactive HTML dashboards (no backend)
-│   ├── apple_sales_dashboard.html        # Main KPI overview
-│   └── apple_advanced_layers.html        # Predictive + Product + SQL layers
+├── notebooks/
+│   ├── README.md
+│   └── apple_forecast_validation.ipynb
+│
+├── outputs/
+│   ├── README.md
+│   ├── quarterly_revenue_validated.csv
+│   ├── forecast_2024.csv
+│   └── dashboard_metrics.json
+│
+├── dashboards/
+│   ├── apple_sales_dashboard.html
+│   └── apple_advanced_layers.html
 │
 ├── recommendations/
-│   └── executive_recommendations.md      # Executive brief with prioritized actions
+│   └── executive_recommendations.md
 │
-├── assets/                        # Dashboard screenshots
-├── data/                          # Dataset access instructions (CSVs not committed)
-└── README.md
+├── assets/                           # Dashboard screenshots
+├── data/
+│   └── README.md                     # Dataset access instructions
+└── README.md                         # Main project documentation
 ```
 
 ---
@@ -107,8 +118,15 @@ Structured across four difficulty tiers:
 | Advanced | Q16–Q20 | Window functions, LAG(), COALESCE, NULLIF, FILTER |
 | Expert | Q21–Q25 | Cohort analysis, PERCENTILE_CONT, Pareto analysis, seasonality indexes, rolling windows
 
-### Phase 4 — Predictive Layer
-Linear trend model built on 20 quarters of actuals (2019–2023) to project 2024 full-year revenue at **$251M**, with an interactive scenario simulator allowing ±growth rate and claim reduction adjustments.
+### Phase 4 — Illustrative Forecasting Layer
+
+I exported quarterly revenue results from PostgreSQL and used a documented Python workflow to fit a simple linear trend with quarterly indicators. The notebook performs data-quality checks, generates the 2024 illustrative forecast, and exports the values used by the dashboard.
+
+Because the educational dataset contains substantial gaps and anomalous periods, the forecast is presented as a portfolio demonstration rather than a production forecast.
+
+- [`notebooks/apple_forecast_validation.ipynb`](notebooks/apple_forecast_validation.ipynb)
+- [`outputs/forecast_2024.csv`](outputs/forecast_2024.csv)
+- [`outputs/dashboard_metrics.json`](outputs/dashboard_metrics.json)
 
 ### Phase 5 — Product Intelligence
 Price-segment vs warranty claim rate analysis revealed a clear inverse relationship: Budget products (&lt;$500) carry **4.4% avg claim rate** — nearly 5× the Luxury tier's 0.9% — while contributing only 8.2% of total revenue.
@@ -151,10 +169,14 @@ See [`recommendations/executive_recommendations.md`](recommendations/executive_r
 
 | Tool | Purpose |
 |---|---|
-| **PostgreSQL** | Primary query engine for all 25 SQL questions |
-| **Chart.js** | Interactive dashboard visualizations |
-| **HTML/CSS/JavaScript** | Self-contained portable dashboard (no backend required) |
-| **EXPLAIN ANALYZE** | Query performance profiling and index validation |
+| **PostgreSQL** | Data validation, joins, aggregations, cohort analysis, seasonality analysis and performance profiling |
+| **Python** | Reproducible data validation and illustrative forecasting |
+| **pandas and NumPy** | Data preparation, transformation and numerical analysis |
+| **scikit-learn** | Linear regression with time-trend and quarterly indicators |
+| **Chart.js** | Interactive dashboard charts |
+| **HTML/CSS/JavaScript** | Self-contained, browser-based dashboard |
+| **Google Colab** | Reproducible notebook execution |
+| **EXPLAIN ANALYZE** | PostgreSQL query-performance testing |
 
 ---
 
