@@ -118,19 +118,19 @@ Price-segment vs warranty claim rate analysis revealed a clear inverse relations
 ## 📊 Key Findings
 
 ### Revenue
-- **Peak year: 2022 at $296.7M** — 66% YoY growth driven by iPhone 14 launch cycle and post-COVID demand recovery
-- **2023 declined to $159.2M** — partially explained by the end of the iPhone 14 super-cycle and macro headwinds
+- **Peak year: 2022 at $296.7M** — 66% YoY growth coinciding with the product-launch periods represented in the dataset; the dataset alone cannot establish the cause of the increase
+- **2023 declined to $159.2M** — palthough incomplete periods and possible data gaps mean the decline should not be interpreted as actual Apple performance
 - **USA accounts for 30.8% of global revenue** across just 10 stores — the highest revenue-per-store market globally
 - **Q4 sQ4 strength appears in the more complete comparison periods, but several years contain substantial gaps or anomalies. In non-anomalous periods, Q4 revenue was approximately 26–37% above Q2; this should be treated as a directional planning signal rather than a production forecast.
 
 ### Warranty & Risk
 - **UAE: 66.4% warranty claim rate** on 17,787 units sold — the highest by a factor of 2.4× vs Spain (27.5%), the next highest country. Estimated warranty liability: **$968K–$4.2M** depending on claim resolution type
 - **Budget products (&lt;$500) generate the most warranty claims** at 4.4% avg — making them the worst risk-adjusted category in the portfolio
-- **iPhone 14 series** shows the highest claim rates among top-10 revenue products (3.08–3.21%) — an early-adopter quality signal
+- **iPhone 14 series** shows the highest claim rates among top-10 revenue products (3.08–3.21%) — a product-level pattern that would warrant further quality and cohort investigation
 - **Mac mini and Mac Studio together: $76.8M in revenue with zero warranty claims** — the most capital-efficient products in the catalog
 
 ### Product
-- **MacBook Pro M1 Max captures 96.6% of its lifetime revenue in the first 12 months** — confirming Apple's buzz-launch model where year-1 is make-or-break
+- **MacBook Pro M1 Max captures 96.6% of its lifetime revenue in the first 12 months** — showing a launch-concentrated sales pattern for this product within the educational dataset
 - **Top 3 products drive 34% of total revenue** — high concentration risk if any single product faces supply disruption
 - **Seasonality index reveals Wearables peak in January** (index 1.29×) and Audio peaks in June (1.18×) — actionable for inventory planning
 

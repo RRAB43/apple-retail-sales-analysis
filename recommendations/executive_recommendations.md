@@ -46,7 +46,7 @@ There is a clear, measurable inverse relationship between product price and warr
 
 The Luxury segment achieves **0.9% claim rate** while generating **$289.5M** — 29% of total revenue from just 3 products.
 
-Mac mini and Mac Studio together produce **$76.8M with zero warranty claims** — meaning every dollar of revenue is pure margin with no after-sale liability.
+Mac mini and Mac Studio together produce **$76.8M with zero warranty claims** — indicating low recorded warranty activity in this dataset. Profitability cannot be determined without product-cost, operating-cost and complete service-cost data.
 
 ### Recommended Actions
 - **Marketing:** Shift emphasis toward Premium and Luxury segments where the margin-to-liability ratio is highest. The data justifies a reallocation of marketing spend away from Budget accessories
@@ -85,14 +85,15 @@ Additionally, warranty claims spike **5–6 months after major launches** — me
 A 5% improvement in Q4 inventory availability (reducing stockouts) on the current $85M average Q4 revenue baseline represents approximately **$4.25M in recoverable revenue** annually — more than the UAE warranty liability.
 
 ---
-
 ## Summary Priority Matrix
 
-| Recommendation | Urgency | Effort | Estimated Impact |
-|---|---|---|---|
-| 1. UAE anomaly investigation | 🔴 High | Low (audit) | $3–4M liability recovery |
-| 2. Portfolio rebalance to Luxury | 🟡 Medium | Medium | $2–5M margin improvement |
-| 3. Q4 inventory & staffing cycle | 🟢 Operational | Low (process) | $4M+ revenue recovery |
+| Recommendation | Urgency | Effort | Expected Decision Value |
+|---|---:|---:|---|
+| Validate UAE claim anomaly | High | Low–Medium | Determines whether the result reflects data quality or operational risk |
+| Review product mix by revenue and claims | Medium | Medium | Identifies products requiring deeper margin and quality analysis |
+| Build a validated seasonal planning model | Medium | Medium | Supports inventory and staffing scenario development |
+
+> Financial figures shown in the dashboard are illustrative scenarios, not measured savings. The dataset does not include complete product costs, repair costs, margins, stockouts or incremental campaign outcomes.
 
 ---
 
