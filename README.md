@@ -10,7 +10,7 @@
 
 ## 📌 Business Problem
 
-Apple operates **73 retail stores across 35 countries**, generating hundreds of millions in annual revenue. This project answers the questions a real retail analytics team faces every quarter:
+This educational dataset represents 73 simulated Apple retail stores across 35 countries and contains more than one million sales records. The analysis is structured to address the types of questions a retail analytics team might investigate.This project answers the questions a real retail analytics team faces every quarter:
 
 - Which stores and markets are growing — and which are silently declining?
 - Are warranty claims a quality signal or a data anomaly?
@@ -80,7 +80,7 @@ apple-retail-sales-analysis/
 Before writing a single business query, I performed EDA to validate data quality:
 - Confirmed 1,040,191 sales records with no nulls in key fields
 - Identified a **data gap in Q1 2021** (only $3M revenue vs $30M+ typical) — flagged as a potential pipeline issue, not a real performance drop
-- Discovered the **UAE cluster** showing 66.4% warranty claim rate — statistically impossible under normal conditions, requiring investigation
+- Discovered the **UAE cluster** showing 66.4% warranty claim rate — highly anomalous relative to the rest of the dataset, requiring investigation
 - Verified distinct `repair_status` values and date ranges across all five tables
 
 ### Phase 2 — Performance Optimization
@@ -121,7 +121,7 @@ Price-segment vs warranty claim rate analysis revealed a clear inverse relations
 - **Peak year: 2022 at $296.7M** — 66% YoY growth driven by iPhone 14 launch cycle and post-COVID demand recovery
 - **2023 declined to $159.2M** — partially explained by the end of the iPhone 14 super-cycle and macro headwinds
 - **USA accounts for 30.8% of global revenue** across just 10 stores — the highest revenue-per-store market globally
-- **Q4 seasonality is consistent**: every year shows a 30–40% revenue uplift in Q4 vs Q2, driven by iPhone launch cycles
+- **Q4 sQ4 strength appears in the more complete comparison periods, but several years contain substantial gaps or anomalies. In non-anomalous periods, Q4 revenue was approximately 26–37% above Q2; this should be treated as a directional planning signal rather than a production forecast.
 
 ### Warranty & Risk
 - **UAE: 66.4% warranty claim rate** on 17,787 units sold — the highest by a factor of 2.4× vs Spain (27.5%), the next highest country. Estimated warranty liability: **$968K–$4.2M** depending on claim resolution type
@@ -141,7 +141,7 @@ Price-segment vs warranty claim rate analysis revealed a clear inverse relations
 See [`recommendations/executive_recommendations.md`](recommendations/executive_recommendations.md) for the full executive brief.
 
 **TL;DR:**
-1. **Investigate UAE immediately** — a 66.4% claim rate is not a performance issue, it's a systemic failure. Estimated exposure: $968K–$4.2M
+1. **Investigate UAE immediately** — a 66.4% recorded claim rate warrants immediate data-quality and operational investigation. Estimated exposure: $968K–$4.2M
 2. **Double down on Luxury products** — $289.5M revenue, 0.9% claim rate. Best risk-adjusted segment in the portfolio
 3. **Use Q4 forecast for inventory planning** — 30–40% uplift every Q4 is predictable and should drive procurement decisions 6 months in advance
 
