@@ -196,8 +196,8 @@ See [`recommendations/executive_recommendations.md`](recommendations/executive_r
 
 ## 👤 Author
 
-**Rabiul Hasan** — Growth marketing & analytics · San Francisco, CA
-📧 rrab4301@gmail.com · [GitHub](https://github.com/RRAB43) <!-- TODO: add your LinkedIn URL here -->
+**Rabiul H.** — Growth marketing & analytics · San Francisco, CA
+📧 rrab4301@gmail.com · [GitHub](https://github.com/RRAB43) <!-- (https://www.linkedin.com/in/rabiul-hasan-b685293ab/) -->
 
 End-to-end skills demonstrated: SQL query design → performance optimization → business insight generation → predictive modeling → executive communication.
 
