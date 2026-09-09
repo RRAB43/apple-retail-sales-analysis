@@ -66,31 +66,63 @@ SELECT
 FROM product_rev
 ORDER BY revenue DESC;
 
--- 24. Seasonality index per category (monthly avg vs category baseline)
-WITH monthly_cat AS (
+-- 24. Revenue seasonality index by product category
+-- Step 1: calculate total revenue for every category and year-month
+-- Step 2: calculate the average for each calendar month
+-- Step 3: compare that month with the category's normal month
+
+WITH monthly_category_revenue AS (
     SELECT
         c.category_name,
-        EXTRACT(MONTH FROM s.sale_date) AS month,
-        AVG(s.quantity * p.price) AS avg_monthly_rev
-    FROM sales    AS s
-    JOIN products AS p ON p.product_id  = s.product_id
-    JOIN category AS c ON c.category_id = p.category_id
-    GROUP BY 1, 2
+        DATE_TRUNC('month', s.sale_date)::date AS revenue_month,
+        EXTRACT(MONTH FROM s.sale_date)::int AS month_number,
+        SUM(s.quantity * p.price) AS monthly_revenue
+    FROM sales AS s
+    JOIN products AS p
+        ON s.product_id = p.product_id
+    JOIN category AS c
+        ON p.category_id = c.category_id
+    GROUP BY
+        c.category_name,
+        DATE_TRUNC('month', s.sale_date),
+        EXTRACT(MONTH FROM s.sale_date)
 ),
-overall_avg AS (
+
+calendar_month_average AS (
     SELECT
         category_name,
-        AVG(avg_monthly_rev) AS base_avg
-    FROM monthly_cat
-    GROUP BY 1
+        month_number,
+        AVG(monthly_revenue) AS average_month_revenue
+    FROM monthly_category_revenue
+    GROUP BY
+        category_name,
+        month_number
+),
+
+category_baseline AS (
+    SELECT
+        category_name,
+        AVG(monthly_revenue) AS normal_monthly_revenue
+    FROM monthly_category_revenue
+    GROUP BY category_name
 )
+
 SELECT
-    mc.category_name,
-    mc.month,
-    ROUND((mc.avg_monthly_rev / oa.base_avg)::numeric, 2) AS seasonality_index
-FROM monthly_cat AS mc
-JOIN overall_avg AS oa ON oa.category_name = mc.category_name
-ORDER BY mc.category_name, mc.month;
+    cma.category_name,
+    cma.month_number,
+    ROUND(cma.average_month_revenue, 2) AS average_month_revenue,
+    ROUND(cb.normal_monthly_revenue, 2) AS normal_monthly_revenue,
+    ROUND(
+        cma.average_month_revenue /
+        NULLIF(cb.normal_monthly_revenue, 0),
+        2
+    ) AS seasonality_index
+FROM calendar_month_average AS cma
+JOIN category_baseline AS cb
+    ON cma.category_name = cb.category_name
+ORDER BY
+    cma.category_name,
+    cma.month_number;
 
 -- 25. 3-month rolling revenue per store, flagged vs chain average
 WITH monthly_store AS (
