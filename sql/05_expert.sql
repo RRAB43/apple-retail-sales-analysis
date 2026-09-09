@@ -4,33 +4,33 @@
 -- seasonality index, rolling windows
 -- ============================================================
 
--- 21. Monthly claim-rate trend (last year of data) — spike detection
-WITH monthly_claims AS (
+-- 21. Warranty claim rate by purchase-month cohort
+-- Each sale is assigned to its original purchase month.
+-- Claims are connected to the original sale through sale_id.
+-- Recent cohorts may show lower rates because they have had
+-- less time to produce warranty claims.
+
+WITH monthly_purchase_cohorts AS (
     SELECT
-        DATE_TRUNC('month', w.claim_date) AS claim_month,
-        COUNT(w.claim_id) AS total_claims
-    FROM warranty AS w
-    JOIN sales AS s ON w.sale_id = s.sale_id
-    WHERE w.claim_date >= (SELECT MAX(claim_date) FROM warranty) - INTERVAL '1 year'
-    GROUP BY 1
-),
-monthly_sales AS (
-    SELECT
-        DATE_TRUNC('month', s.sale_date) AS sale_month,
-        SUM(s.quantity * p.price) AS total_sales
+        DATE_TRUNC('month', s.sale_date)::date AS purchase_month,
+        SUM(s.quantity) AS units_sold,
+        COUNT(DISTINCT w.claim_id) AS warranty_claims
     FROM sales AS s
-    JOIN products AS p ON s.product_id = p.product_id
-    WHERE s.sale_date >= (SELECT MAX(sale_date) FROM sales) - INTERVAL '1 year'
-    GROUP BY 1
+    LEFT JOIN warranty AS w
+        ON s.sale_id = w.sale_id
+    GROUP BY DATE_TRUNC('month', s.sale_date)
 )
+
 SELECT
-    mc.claim_month,
-    mc.total_claims,
-    ms.total_sales,
-    ROUND(mc.total_claims::numeric / NULLIF(ms.total_sales, 0) * 100, 2) AS claim_rate
-FROM monthly_claims AS mc
-JOIN monthly_sales AS ms ON mc.claim_month = ms.sale_month
-ORDER BY mc.claim_month;
+    purchase_month,
+    units_sold,
+    warranty_claims,
+    ROUND(
+        100.0 * warranty_claims / NULLIF(units_sold, 0),
+        2
+    ) AS lifetime_claim_rate_pct
+FROM monthly_purchase_cohorts
+ORDER BY purchase_month;
 
 -- 22. Average and median days from sale to warranty claim, by category
 SELECT

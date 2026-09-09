@@ -105,7 +105,7 @@ Structured across four difficulty tiers:
 | Foundational | Q1–Q10 | JOINs, GROUP BY, date filters, aggregations |
 | Intermediate | Q11–Q15 | CTEs, RANK(), subqueries, HAVING |
 | Advanced | Q16–Q20 | Window functions, LAG(), COALESCE, NULLIF, FILTER |
-| Expert | Q21–Q25 | ROWS BETWEEN, PERCENTILE_CONT, seasonality index, rolling windows, zero-claim detection |
+| Expert | Q21–Q25 | Cohort analysis, PERCENTILE_CONT, Pareto analysis, seasonality indexes, rolling windows
 
 ### Phase 4 — Predictive Layer
 Linear trend model built on 20 quarters of actuals (2019–2023) to project 2024 full-year revenue at **$251M**, with an interactive scenario simulator allowing ±growth rate and claim reduction adjustments.
